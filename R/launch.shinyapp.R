@@ -15,7 +15,7 @@
 #' @importFrom graphics grid polygon
 #' @importFrom grDevices rgb
 #' @export
-launch.shinyapp <- function() {
+powerprior_launch_shinyapp <- function() {
   app_dir <- system.file("shiny", "app", package = "powerprior")
   if (app_dir == "") {
     stop("Could not find the Shiny application directory.
