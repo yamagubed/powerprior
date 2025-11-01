@@ -13,16 +13,16 @@ posterior_multivariate()}
 \item{n_samples}{Number of samples to generate (default: 1000).
 For large n_samples or high dimensions, computation time increases.}
 
-\item{marginal}{Logical. If TRUE, samples only μ from the multivariate
-t-distribution. If FALSE (default), samples the joint (μ, Σ) from the
+\item{marginal}{Logical. If TRUE, samples only \eqn{\mu} from the multivariate
+t-distribution. If FALSE (default), samples the joint (\eqn{\mu}, \eqn{\Sigma}) from the
 NIW distribution, which is more computationally intensive but provides
 uncertainty in the covariance structure.}
 }
 \value{
 If marginal=FALSE, a list with components:
-\item{mu}{n_samples × p matrix of mean samples}
-\item{Sigma}{p × p × n_samples array of covariance samples}
-If marginal=TRUE, an n_samples × p matrix of mean samples.
+\item{mu}{n_samples x p matrix of mean samples}
+\item{Sigma}{p x p x n_samples array of covariance samples}
+If marginal=TRUE, an n_samples x p matrix of mean samples.
 }
 \description{
 Generates samples from the multivariate posterior distribution using exact
@@ -36,11 +36,11 @@ closed-form expressions from the Normal-Inverse-Wishart conjugate family.
 Implements the standard hierarchical sampling algorithm for the NIW distribution:
 
 \enumerate{
-\item Draw Σ ~ Inverse-Wishart(ν*, Λ*)
-\item Draw μ | Σ ~ N_p(μ*, Σ / κ*)
+\item Draw \eqn{\Sigma} ~ Inverse-Wishart(\eqn{\nu^*}, \eqn{\Lambda^*})
+\item Draw \eqn{\mu} | \eqn{\Sigma} ~ N_p(\eqn{\mu^*}, \eqn{\Sigma} / \eqn{\kappa^*})
 }
 
-This produces samples from the joint distribution P(μ, Σ | Y, X, a₀) and captures
+This produces samples from the joint distribution P(\eqn{\mu}, \eqn{\Sigma} | Y, X, \eqn{a_0}) and captures
 both uncertainty in the mean and uncertainty in the covariance structure, including
 their dependence.
 

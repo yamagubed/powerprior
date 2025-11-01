@@ -42,7 +42,7 @@ Only used for informative priors. If NULL, vague prior is applied.
 Must satisfy nu0 >= p. Higher values indicate greater prior confidence
 in the covariance structure. Typical values range from p to 2p for informative priors.}
 
-\item{Lambda0}{Prior scale matrix (p × p, symmetric positive definite).
+\item{Lambda0}{Prior scale matrix (p x p, symmetric positive definite).
 Only used for informative priors. If NULL, vague prior is applied.
 Represents the prior belief about the covariance structure. Larger values
 correspond to greater prior uncertainty about variable spread and relationships.
@@ -53,7 +53,7 @@ A list of class "powerprior_multivariate" containing:
 \item{mu_n}{Updated mean vector (p-dimensional)}
 \item{kappa_n}{Updated precision parameter (effective sample size)}
 \item{nu_n}{Updated degrees of freedom}
-\item{Lambda_n}{Updated scale matrix (p × p)}
+\item{Lambda_n}{Updated scale matrix (p x p)}
 \item{a0}{Discounting parameter used}
 \item{m}{Sample size of historical data}
 \item{p}{Dimension (number of variables) of the data}
@@ -73,7 +73,7 @@ Normal-Inverse-Wishart (NIW) representation.
 \subsection{Background on Multivariate Power Priors}{
 
 The power prior framework extends naturally to multivariate normal data when
-the mean vector μ and covariance matrix Σ are jointly unknown. This is essential
+the mean vector \eqn{\mu} and covariance matrix \eqn{\Sigma} are jointly unknown. This is essential
 for modern applications involving multiple correlated endpoints, such as clinical
 trials measuring multiple health outcomes simultaneously.
 
@@ -84,9 +84,9 @@ The power prior for multivariate data is defined analogously to the univariate c
 
 where:
 \itemize{
-\item \eqn{\mathbf{X}} is the m × p historical data matrix
+\item \eqn{\mathbf{X}} is the m x p historical data matrix
 \item \eqn{\boldsymbol{\mu}} is the p-dimensional mean vector
-\item \eqn{\boldsymbol{\Sigma}} is the p × p covariance matrix
+\item \eqn{\boldsymbol{\Sigma}} is the p x p covariance matrix
 \item \eqn{a_0 \in [0, 1]} is the discounting parameter
 }
 }
@@ -154,22 +154,22 @@ you want the analysis driven primarily by the historical data.
 
 \subsection{Parameter Interpretation in Multivariate Setting}{
 
-\strong{Effective Sample Size (κₙ):} Quantifies how much "effective historical data"
+\strong{Effective Sample Size (\eqn{\kappa_n}):} Quantifies how much "effective historical data"
 has been incorporated. The formula \eqn{\kappa_n = a_0 m + \kappa_0} shows the
 discounted historical sample size combined with prior precision. This controls the
 concentration of the posterior distribution for the mean vector.
 
-\strong{Mean Vector (μₙ):} The updated mean is a precision-weighted average:
+\strong{Mean Vector (\eqn{\mu_n}):} The updated mean is a precision-weighted average:
 \eqn{\boldsymbol{\mu}_n = \frac{a_0 m \overline{\mathbf{x}} + \kappa_0 \boldsymbol{\mu}_0}{a_0 m + \kappa_0}}
 This naturally balances the historical sample mean and prior mean, with weights
 proportional to their respective precisions.
 
-\strong{Degrees of Freedom (νₙ):} Controls tail behavior and the concentration of the
+\strong{Degrees of Freedom (\eqn{\nu_n}):} Controls tail behavior and the concentration of the
 Wishart distribution. Higher values indicate greater confidence in the covariance
 estimate. The minimum value needed is p (number of variables) for the Inverse-Wishart
 to be well-defined; \eqn{\nu_n \geq p} is always maintained.
 
-\strong{Scale Matrix (Λₙ):} The p × p scale matrix that captures both the dispersion
+\strong{Scale Matrix (\eqn{\Lambda_n}):} The p x p scale matrix that captures both the dispersion
 of individual variables and their correlations. The term
 \eqn{\frac{\kappa_0 a_0 m}{a_0 m + \kappa_0} (\overline{\mathbf{x}} - \boldsymbol{\mu}_0)
 (\overline{\mathbf{x}} - \boldsymbol{\mu}_0)^T} adds uncertainty when the historical
@@ -179,7 +179,7 @@ mean conflicts with the prior mean, naturally reflecting disagreement between da
 \subsection{Practical Considerations}{
 
 \strong{Dimension:} This implementation works efficiently for moderate-dimensional problems
-(typically p ≤ 10). For higher dimensions, consider data reduction techniques or
+(typically p \eqn{\leq} 10). For higher dimensions, consider data reduction techniques or
 structural assumptions on the covariance matrix.
 
 \strong{Prior Specification:} When specifying Lambda0, ensure it is symmetric positive

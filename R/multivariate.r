@@ -32,7 +32,7 @@
 #'   Must satisfy nu0 >= p. Higher values indicate greater prior confidence
 #'   in the covariance structure. Typical values range from p to 2p for informative priors.
 #'
-#' @param Lambda0 Prior scale matrix (p × p, symmetric positive definite).
+#' @param Lambda0 Prior scale matrix (p x p, symmetric positive definite).
 #'   Only used for informative priors. If NULL, vague prior is applied.
 #'   Represents the prior belief about the covariance structure. Larger values
 #'   correspond to greater prior uncertainty about variable spread and relationships.
@@ -42,7 +42,7 @@
 #'   \item{mu_n}{Updated mean vector (p-dimensional)}
 #'   \item{kappa_n}{Updated precision parameter (effective sample size)}
 #'   \item{nu_n}{Updated degrees of freedom}
-#'   \item{Lambda_n}{Updated scale matrix (p × p)}
+#'   \item{Lambda_n}{Updated scale matrix (p x p)}
 #'   \item{a0}{Discounting parameter used}
 #'   \item{m}{Sample size of historical data}
 #'   \item{p}{Dimension (number of variables) of the data}
@@ -58,7 +58,7 @@
 #' ## Background on Multivariate Power Priors
 #'
 #' The power prior framework extends naturally to multivariate normal data when
-#' the mean vector μ and covariance matrix Σ are jointly unknown. This is essential
+#' the mean vector \eqn{\mu} and covariance matrix \eqn{\Sigma} are jointly unknown. This is essential
 #' for modern applications involving multiple correlated endpoints, such as clinical
 #' trials measuring multiple health outcomes simultaneously.
 #'
@@ -68,9 +68,9 @@
 #'   L(\boldsymbol{\mu}, \boldsymbol{\Sigma} | \mathbf{X})^{a_0} P(\boldsymbol{\mu}, \boldsymbol{\Sigma})}
 #'
 #' where:
-#' - \eqn{\mathbf{X}} is the m × p historical data matrix
+#' - \eqn{\mathbf{X}} is the m x p historical data matrix
 #' - \eqn{\boldsymbol{\mu}} is the p-dimensional mean vector
-#' - \eqn{\boldsymbol{\Sigma}} is the p × p covariance matrix
+#' - \eqn{\boldsymbol{\Sigma}} is the p x p covariance matrix
 #' - \eqn{a_0 \in [0, 1]} is the discounting parameter
 #'
 #' ## Conjugacy via Normal-Inverse-Wishart Distribution
@@ -134,22 +134,22 @@
 #'
 #' ## Parameter Interpretation in Multivariate Setting
 #'
-#' **Effective Sample Size (κₙ):** Quantifies how much "effective historical data"
+#' **Effective Sample Size (\eqn{\kappa_n}):** Quantifies how much "effective historical data"
 #' has been incorporated. The formula \eqn{\kappa_n = a_0 m + \kappa_0} shows the
 #' discounted historical sample size combined with prior precision. This controls the
 #' concentration of the posterior distribution for the mean vector.
 #'
-#' **Mean Vector (μₙ):** The updated mean is a precision-weighted average:
+#' **Mean Vector (\eqn{\mu_n}):** The updated mean is a precision-weighted average:
 #' \eqn{\boldsymbol{\mu}_n = \frac{a_0 m \overline{\mathbf{x}} + \kappa_0 \boldsymbol{\mu}_0}{a_0 m + \kappa_0}}
 #' This naturally balances the historical sample mean and prior mean, with weights
 #' proportional to their respective precisions.
 #'
-#' **Degrees of Freedom (νₙ):** Controls tail behavior and the concentration of the
+#' **Degrees of Freedom (\eqn{\nu_n}):** Controls tail behavior and the concentration of the
 #' Wishart distribution. Higher values indicate greater confidence in the covariance
 #' estimate. The minimum value needed is p (number of variables) for the Inverse-Wishart
 #' to be well-defined; \eqn{\nu_n \geq p} is always maintained.
 #'
-#' **Scale Matrix (Λₙ):** The p × p scale matrix that captures both the dispersion
+#' **Scale Matrix (\eqn{\Lambda_n}):** The p x p scale matrix that captures both the dispersion
 #' of individual variables and their correlations. The term
 #' \eqn{\frac{\kappa_0 a_0 m}{a_0 m + \kappa_0} (\overline{\mathbf{x}} - \boldsymbol{\mu}_0)
 #' (\overline{\mathbf{x}} - \boldsymbol{\mu}_0)^T} adds uncertainty when the historical
@@ -158,7 +158,7 @@
 #' ## Practical Considerations
 #'
 #' **Dimension:** This implementation works efficiently for moderate-dimensional problems
-#' (typically p ≤ 10). For higher dimensions, consider data reduction techniques or
+#' (typically p \eqn{\leq} 10). For higher dimensions, consider data reduction techniques or
 #' structural assumptions on the covariance matrix.
 #'
 #' **Prior Specification:** When specifying Lambda0, ensure it is symmetric positive
@@ -322,15 +322,15 @@ powerprior_multivariate <- function(historical_data, a0,
 #' @details
 #' ## Posterior Updating in the Multivariate Setting
 #'
-#' Given a power prior P(μ, Σ | X, a₀) and new current data Y, the posterior
+#' Given a power prior P(\eqn{\mu}, \eqn{\Sigma} | X, \eqn{a_0}) and new current data Y, the posterior
 #' distribution combines both through Bayes' theorem. The conjugate NIW structure
 #' ensures the posterior remains a NIW distribution with closed-form parameters.
 #'
 #' The updating mechanism mirrors the univariate case but extends to handle the
-#' covariance matrix structure. The scale matrix Λ* incorporates:
+#' covariance matrix structure. The scale matrix \eqn{\Lambda^*} incorporates:
 #'
-#' 1. Discounted historical sum of squares and crossproducts (a₀ * S_x)
-#' 2. Prior scale information (Λ₀, if using informative prior)
+#' 1. Discounted historical sum of squares and crossproducts (\eqn{a_0} * S_x)
+#' 2. Prior scale information (\eqn{\Lambda_0}, if using informative prior)
 #' 3. Current data sum of squares and crossproducts (S_y)
 #' 4. Disagreement terms that increase uncertainty when historical and current means differ
 #'
@@ -462,15 +462,15 @@ posterior_multivariate <- function(powerprior, current_data) {
 #'   posterior_multivariate()
 #' @param n_samples Number of samples to generate (default: 1000).
 #'   For large n_samples or high dimensions, computation time increases.
-#' @param marginal Logical. If TRUE, samples only μ from the multivariate
-#'   t-distribution. If FALSE (default), samples the joint (μ, Σ) from the
+#' @param marginal Logical. If TRUE, samples only \eqn{\mu} from the multivariate
+#'   t-distribution. If FALSE (default), samples the joint (\eqn{\mu}, \eqn{\Sigma}) from the
 #'   NIW distribution, which is more computationally intensive but provides
 #'   uncertainty in the covariance structure.
 #'
 #' @return If marginal=FALSE, a list with components:
-#'   \item{mu}{n_samples × p matrix of mean samples}
-#'   \item{Sigma}{p × p × n_samples array of covariance samples}
-#'   If marginal=TRUE, an n_samples × p matrix of mean samples.
+#'   \item{mu}{n_samples x p matrix of mean samples}
+#'   \item{Sigma}{p x p x n_samples array of covariance samples}
+#'   If marginal=TRUE, an n_samples x p matrix of mean samples.
 #'
 #' @details
 #' ## Sampling Algorithms
@@ -480,11 +480,11 @@ posterior_multivariate <- function(powerprior, current_data) {
 #' Implements the standard hierarchical sampling algorithm for the NIW distribution:
 #'
 #' \enumerate{
-#'   \item Draw Σ ~ Inverse-Wishart(ν*, Λ*)
-#'   \item Draw μ | Σ ~ N_p(μ*, Σ / κ*)
+#'   \item Draw \eqn{\Sigma} ~ Inverse-Wishart(\eqn{\nu^*}, \eqn{\Lambda^*})
+#'   \item Draw \eqn{\mu} | \eqn{\Sigma} ~ N_p(\eqn{\mu^*}, \eqn{\Sigma} / \eqn{\kappa^*})
 #' }
 #'
-#' This produces samples from the joint distribution P(μ, Σ | Y, X, a₀) and captures
+#' This produces samples from the joint distribution P(\eqn{\mu}, \eqn{\Sigma} | Y, X, \eqn{a_0}) and captures
 #' both uncertainty in the mean and uncertainty in the covariance structure, including
 #' their dependence.
 #'

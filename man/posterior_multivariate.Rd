@@ -33,15 +33,15 @@ the posterior distribution.
 \details{
 \subsection{Posterior Updating in the Multivariate Setting}{
 
-Given a power prior P(μ, Σ | X, a₀) and new current data Y, the posterior
+Given a power prior P(\eqn{\mu}, \eqn{\Sigma} | X, \eqn{a_0}) and new current data Y, the posterior
 distribution combines both through Bayes' theorem. The conjugate NIW structure
 ensures the posterior remains a NIW distribution with closed-form parameters.
 
 The updating mechanism mirrors the univariate case but extends to handle the
-covariance matrix structure. The scale matrix Λ* incorporates:
+covariance matrix structure. The scale matrix \eqn{\Lambda^*} incorporates:
 \enumerate{
-\item Discounted historical sum of squares and crossproducts (a₀ * S_x)
-\item Prior scale information (Λ₀, if using informative prior)
+\item Discounted historical sum of squares and crossproducts (\eqn{a_0} * S_x)
+\item Prior scale information (\eqn{\Lambda_0}, if using informative prior)
 \item Current data sum of squares and crossproducts (S_y)
 \item Disagreement terms that increase uncertainty when historical and current means differ
 }

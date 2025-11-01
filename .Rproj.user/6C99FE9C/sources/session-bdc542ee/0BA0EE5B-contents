@@ -284,7 +284,7 @@ powerprior_univariate <- function(historical_data, a0,
 #' @details
 #' ## Posterior Updating
 #'
-#' Given a power prior distribution P(μ, σ² | x, a₀) and new current data y,
+#' Given a power prior distribution P(\eqn{\mu}, \eqn{\sigma^2} | x, \eqn{a_0}) and new current data y,
 #' the posterior distribution is computed by combining the power prior with
 #' the likelihood of the current data using Bayes' theorem.
 #'
