@@ -58,7 +58,7 @@ A list of class "powerprior_univariate" containing:
 \item{a0}{Discounting parameter used}
 \item{m}{Sample size of historical data}
 \item{xbar}{Sample mean of historical data}
-\item{S}{Sum of squared deviations of historical data}
+\item{Sx}{Sum of squared deviations of historical data}
 \item{vague_prior}{Logical indicating if vague prior was used}
 \item{mu0}{Prior mean (if informative prior used)}
 \item{kappa0}{Prior precision (if informative prior used)}
@@ -127,11 +127,11 @@ The power prior parameters are updated:
 
 \deqn{\nu_n = a_0 m + \nu_0}
 
-\deqn{\sigma^2_n = \frac{1}{\nu_n} \left[ a_0 S + \nu_0 \sigma^2_0 +
+\deqn{\sigma^2_n = \frac{1}{\nu_n} \left[ a_0 S_x + \nu_0 \sigma^2_0 +
   \frac{a_0 m \kappa_0 (\bar{x} - \mu_0)^2}{a_0 m + \kappa_0} \right]}
 
 where \eqn{m} is the sample size, \eqn{\bar{x}} is the sample mean, and
-\eqn{S = \sum_{i=1}^m (x_i - \bar{x})^2} is the sum of squared deviations.
+\eqn{S_x = \sum_{i=1}^m (x_i - \bar{x})^2} is the sum of squared deviations.
 
 \strong{Vague (Non-informative) Initial Prior (all of mu0, kappa0, nu0, sigma2_0 are NULL):}
 
@@ -145,7 +145,7 @@ The power prior parameters simplify to:
 
 \deqn{\nu_n = a_0 m - 1}
 
-\deqn{\sigma^2_n = \frac{S}{m}}
+\deqn{\sigma^2_n = \frac{a_0 S_x}{\nu_n}}
 
 The vague prior approach is recommended when there is no strong prior information,
 or when you want the analysis to be primarily driven by the (discounted) historical data.

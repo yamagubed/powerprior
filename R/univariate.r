@@ -47,7 +47,7 @@
 #'   \item{a0}{Discounting parameter used}
 #'   \item{m}{Sample size of historical data}
 #'   \item{xbar}{Sample mean of historical data}
-#'   \item{S}{Sum of squared deviations of historical data}
+#'   \item{Sx}{Sum of squared deviations of historical data}
 #'   \item{vague_prior}{Logical indicating if vague prior was used}
 #'   \item{mu0}{Prior mean (if informative prior used)}
 #'   \item{kappa0}{Prior precision (if informative prior used)}
@@ -110,11 +110,11 @@
 #'
 #' \deqn{\nu_n = a_0 m + \nu_0}
 #'
-#' \deqn{\sigma^2_n = \frac{1}{\nu_n} \left[ a_0 S + \nu_0 \sigma^2_0 +
+#' \deqn{\sigma^2_n = \frac{1}{\nu_n} \left[ a_0 S_x + \nu_0 \sigma^2_0 +
 #'   \frac{a_0 m \kappa_0 (\bar{x} - \mu_0)^2}{a_0 m + \kappa_0} \right]}
 #'
 #' where \eqn{m} is the sample size, \eqn{\bar{x}} is the sample mean, and
-#' \eqn{S = \sum_{i=1}^m (x_i - \bar{x})^2} is the sum of squared deviations.
+#' \eqn{S_x = \sum_{i=1}^m (x_i - \bar{x})^2} is the sum of squared deviations.
 #'
 #' **Vague (Non-informative) Initial Prior (all of mu0, kappa0, nu0, sigma2_0 are NULL):**
 #'
@@ -128,7 +128,7 @@
 #'
 #' \deqn{\nu_n = a_0 m - 1}
 #'
-#' \deqn{\sigma^2_n = \frac{S}{m}}
+#' \deqn{\sigma^2_n = \frac{a_0 S_x}{\nu_n}}
 #'
 #' The vague prior approach is recommended when there is no strong prior information,
 #' or when you want the analysis to be primarily driven by the (discounted) historical data.
@@ -213,7 +213,7 @@ powerprior_univariate <- function(historical_data, a0,
   # Calculate sufficient statistics
   m <- length(historical_data)
   xbar <- mean(historical_data)
-  S <- sum((historical_data - xbar)^2)
+  Sx <- sum((historical_data - xbar)^2)
 
   # Check if using informative or vague prior
   use_informative <- !is.null(mu0) && !is.null(kappa0) &&
@@ -225,7 +225,7 @@ powerprior_univariate <- function(historical_data, a0,
     mu_n <- (a0 * m * xbar + kappa0 * mu0) / (a0 * m + kappa0)
     kappa_n <- a0 * m + kappa0
     nu_n <- a0 * m + nu0
-    sigma2_n <- (1 / nu_n) * (a0 * S + nu0 * sigma2_0 +
+    sigma2_n <- (1 / nu_n) * (a0 * Sx + nu0 * sigma2_0 +
                                 (a0 * m * kappa0 * (xbar - mu0)^2) / (a0 * m + kappa0))
 
   } else {
@@ -234,7 +234,7 @@ powerprior_univariate <- function(historical_data, a0,
     mu_n <- xbar
     kappa_n <- a0 * m
     nu_n <- a0 * m - 1
-    sigma2_n <- S / m
+    sigma2_n <- (a0 * Sx) / nu_n
   }
 
   result <- list(
@@ -245,7 +245,7 @@ powerprior_univariate <- function(historical_data, a0,
     a0 = a0,
     m = m,
     xbar = xbar,
-    S = S,
+    Sx = Sx,
     vague_prior = !use_informative
   )
 
@@ -347,15 +347,15 @@ posterior_univariate <- function(powerprior, current_data) {
     mu_star <- (a0 * m * powerprior$xbar + n * ybar) / (a0 * m + n)
     kappa_star <- a0 * m + n
     nu_star <- a0 * m + n - 1
-    sigma2_star <- (1 / (a0 * m + n)) *
-      (a0 * powerprior$S + Sy +
+    sigma2_star <- (1 / (a0 * m + n - 1)) *
+      (a0 * powerprior$Sx + Sy +
          (a0 * m * n * (powerprior$xbar - ybar)^2) / (a0 * m + n))
 
   } else {
     # Theorem 2: Posterior with informative initial prior
     # Equations (5)-(8)
     xbar <- powerprior$xbar
-    S <- powerprior$S
+    Sx <- powerprior$Sx
     mu0 <- powerprior$mu0
     kappa0 <- powerprior$kappa0
     nu0 <- powerprior$nu0
@@ -365,7 +365,7 @@ posterior_univariate <- function(powerprior, current_data) {
     kappa_star <- a0 * m + kappa0 + n
     nu_star <- a0 * m + nu0 + n
     sigma2_star <- (1 / nu_star) *
-      (a0 * S + nu0 * sigma2_0 +
+      (a0 * Sx + nu0 * sigma2_0 +
          (a0 * m * kappa0 * (xbar - mu0)^2) / (a0 * m + kappa0) +
          Sy +
          (n * (a0 * m + kappa0) * (mu_n - ybar)^2) / (a0 * m + kappa0 + n))
@@ -473,7 +473,7 @@ print.powerprior_univariate <- function(x, ...) {
   cat("Historical data:\n")
   cat("  Sample size (m):", x$m, "\n")
   cat("  Sample mean:", round(x$xbar, 4), "\n")
-  cat("  Sum of squares:", round(x$S, 4), "\n\n")
+  cat("  Sum of squares:", round(x$Sx, 4), "\n\n")
   cat("Discounting parameter (a0):", x$a0, "\n\n")
   cat("Prior type:", ifelse(x$vague_prior, "Vague (non-informative)", "Informative NIX"), "\n\n")
   cat("Power prior parameters:\n")

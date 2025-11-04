@@ -108,8 +108,8 @@
 #' \deqn{\nu_n = a_0 m + \nu_0}
 #'
 #' \deqn{\boldsymbol{\Lambda}_n = a_0 \mathbf{S}_x + \boldsymbol{\Lambda}_0 +
-#'   \frac{\kappa_0 a_0 m}{a_0 m + \kappa_0} (\overline{\mathbf{x}} - \boldsymbol{\mu}_0)
-#'   (\overline{\mathbf{x}} - \boldsymbol{\mu}_0)^T}
+#'   \frac{\kappa_0 a_0 m}{a_0 m + \kappa_0} (\boldsymbol{\mu}_0 - \overline{\mathbf{x}})
+#'   (\boldsymbol{\mu}_0 - \overline{\mathbf{x}})^T}
 #'
 #' where \eqn{m} is sample size, \eqn{\overline{\mathbf{x}}} is the sample mean vector,
 #' and \eqn{\mathbf{S}_x = \sum_{i=1}^m (\mathbf{x}_i - \overline{\mathbf{x}})
@@ -151,8 +151,8 @@
 #'
 #' **Scale Matrix (\eqn{\Lambda_n}):** The p x p scale matrix that captures both the dispersion
 #' of individual variables and their correlations. The term
-#' \eqn{\frac{\kappa_0 a_0 m}{a_0 m + \kappa_0} (\overline{\mathbf{x}} - \boldsymbol{\mu}_0)
-#' (\overline{\mathbf{x}} - \boldsymbol{\mu}_0)^T} adds uncertainty when the historical
+#' \eqn{\frac{\kappa_0 a_0 m}{a_0 m + \kappa_0} (\boldsymbol{\mu}_0 - \overline{\mathbf{x}})
+#' (\boldsymbol{\mu}_0 - \overline{\mathbf{x}})^T} adds uncertainty when the historical
 #' mean conflicts with the prior mean, naturally reflecting disagreement between data sources.
 #'
 #' ## Practical Considerations
