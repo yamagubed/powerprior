@@ -2,6 +2,8 @@
 #'
 #' This function launches the Shiny application.
 #'
+#' @return No return value, called for side effects (launches Shiny app)
+#'
 #' @importFrom shiny runApp
 #' @importFrom shinydashboard dashboardPage dashboardHeader dashboardSidebar dashboardBody sidebarMenu menuItem
 #' @importFrom ggplot2 ggplot aes geom_line geom_point geom_ribbon labs theme_minimal theme element_text

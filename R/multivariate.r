@@ -577,6 +577,7 @@ sample_posterior_multivariate <- function(posterior, n_samples = 1000,
 #' Print method for powerprior_multivariate
 #' @param x Object of class "powerprior_multivariate"
 #' @param ... Additional arguments
+#' @return Invisibly returns the input object (for method chaining)
 #' @export
 print.powerprior_multivariate <- function(x, ...) {
   cat("Multivariate Power Prior (NIW Distribution)\n")
@@ -600,6 +601,7 @@ print.powerprior_multivariate <- function(x, ...) {
 #' Print method for posterior_multivariate
 #' @param x Object of class "posterior_multivariate"
 #' @param ... Additional arguments
+#' @return Invisibly returns the input object (for method chaining)
 #' @export
 print.posterior_multivariate <- function(x, ...) {
   cat("Multivariate Posterior Distribution (NIW)\n")

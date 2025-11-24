@@ -13,6 +13,9 @@
 
 \item{...}{Additional arguments}
 }
+\value{
+Invisibly returns the input object (for method chaining)
+}
 \description{
 Print method for compatibility_check
 }

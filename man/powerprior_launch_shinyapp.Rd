@@ -6,6 +6,9 @@
 \usage{
 powerprior_launch_shinyapp()
 }
+\value{
+No return value, called for side effects (launches Shiny app)
+}
 \description{
 This function launches the Shiny application.
 }

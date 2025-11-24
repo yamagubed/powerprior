@@ -139,6 +139,7 @@ compare_discounting <- function(historical_data, current_data,
 #' @param x Object of class "powerprior_comparison"
 #' @param digits Number of digits to round to
 #' @param ... Additional arguments
+#' @return Invisibly returns the input object (for method chaining)
 #' @export
 print.powerprior_comparison <- function(x, digits = 4, ...) {
   cat("Power Prior Sensitivity Analysis\n")
@@ -166,7 +167,7 @@ print.powerprior_comparison <- function(x, digits = 4, ...) {
 #' @return A ggplot2 object (if ggplot2 is available) or base R plot
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' set.seed(123)
 #' historical <- rnorm(50, mean = 10, sd = 2)
 #' current <- rnorm(30, mean = 10.5, sd = 2)
@@ -360,6 +361,7 @@ posterior_summary <- function(posterior, n_samples = 10000, prob = 0.95) {
 #' @param x Object of class "powerprior_summary"
 #' @param digits Number of digits to round to
 #' @param ... Additional arguments
+#' @return Invisibly returns the input object (for method chaining)
 #' @export
 print.powerprior_summary <- function(x, digits = 4, ...) {
   cat("Posterior Summary Statistics\n")
@@ -528,6 +530,7 @@ check_compatibility <- function(historical_data, current_data, alpha = 0.05) {
 #' @param x Object of class "compatibility_check"
 #' @param digits Number of digits to round to
 #' @param ... Additional arguments
+#' @return Invisibly returns the input object (for method chaining)
 #' @export
 print.compatibility_check <- function(x, digits = 4, ...) {
   cat("Data Compatibility Check\n")

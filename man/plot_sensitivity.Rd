@@ -20,7 +20,7 @@ A ggplot2 object (if ggplot2 is available) or base R plot
 Creates a plot showing how posterior estimates vary with the discounting parameter.
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(123)
 historical <- rnorm(50, mean = 10, sd = 2)
 current <- rnorm(30, mean = 10.5, sd = 2)

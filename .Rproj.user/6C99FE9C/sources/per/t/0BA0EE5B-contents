@@ -466,6 +466,7 @@ sample_posterior_univariate <- function(posterior, n_samples = 1000,
 #' Print method for powerprior_univariate
 #' @param x Object of class "powerprior_univariate"
 #' @param ... Additional arguments
+#' @return Invisibly returns the input object (for method chaining)
 #' @export
 print.powerprior_univariate <- function(x, ...) {
   cat("Univariate Power Prior (NIX Distribution)\n")
@@ -488,6 +489,7 @@ print.powerprior_univariate <- function(x, ...) {
 #' Print method for posterior_univariate
 #' @param x Object of class "posterior_univariate"
 #' @param ... Additional arguments
+#' @return Invisibly returns the input object (for method chaining)
 #' @export
 print.posterior_univariate <- function(x, ...) {
   cat("Univariate Posterior Distribution (NIX)\n")
